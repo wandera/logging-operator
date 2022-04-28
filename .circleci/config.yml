@@ -52,10 +52,6 @@ jobs:
       CHANGE_MINIKUBE_NONE_USER: 'true'
       GOPATH: '/home/circleci/go'
     steps:
-      # https://gitlab.alpinelinux.org/alpine/aports/-/issues/12821
-      - setup_remote_docker:
-          version: 20.10.6
-
       - run:
           name: Setup minikube
           command: |
@@ -105,7 +101,7 @@ jobs:
       - run:
           name: Build fluentd docker image
           command: |
-            make docker-build-fluentd IMG='fluentd:local'            
+            docker build ./fluentd-image/e2e-test -t fluentd:local
 
       - run:
           name: Wait for minikube
