@@ -5,8 +5,10 @@ metadata:
   name: {{ .name | default "event-tailer" }}
 spec:
   controlNamespace: {{ $.Values.controlNamespace | default $.Release.Namespace }}
+{{- with .workloadOverrides }}
   workloadOverrides:
-    priorityClassName: system-node-critical
+{{ toYaml . | indent 4 }}
+{{- end }}
 {{- with .containerOverrides }}
   containerOverrides:
 {{- toYaml . | nindent 4 }}
@@ -18,7 +20,10 @@ spec:
         accessModes: {{ .accessModes | default (list "ReadWriteOnce") }}
         resources:
           requests:
-            storage: {{ .storage | default "1G" }}
+            storage: {{ .storage | default "1Gi" }}
         volumeMode: {{ .volumeMode | default "Filesystem" }}
+{{- with .storageClass }}
+        storageClass: {{ .storageClass }}
+{{- end }}
 {{- end }}
 {{- end }}
