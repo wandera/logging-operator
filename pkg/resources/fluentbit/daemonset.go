@@ -297,25 +297,13 @@ func (r *Reconciler) bufferMetricsSidecarContainer() *corev1.Container {
 		} else {
 			args = append(args, "--collector.disable-defaults", "--collector.filesystem")
 		}
-
-		nodeExporterCmd := fmt.Sprintf("nodeexporter -> ./bin/node_exporter %v", strings.Join(args, " "))
-		bufferSizeCmd := "buffersize -> /prometheus/buffer-size.sh"
-
+		customRunner := fmt.Sprintf("./bin/node_exporter %v", strings.Join(args, " "))
 		return &corev1.Container{
 			Name:            "buffer-metrics-sidecar",
 			Image:           r.Logging.Spec.FluentbitSpec.BufferVolumeImage.RepositoryWithTag(),
 			ImagePullPolicy: corev1.PullPolicy(r.Logging.Spec.FluentbitSpec.BufferVolumeImage.PullPolicy),
-			Args: []string{
-				"--exec", nodeExporterCmd,
-				"--exec", bufferSizeCmd,
-			},
-			Env: []corev1.EnvVar{
-				{
-					Name:  "BUFFER_PATH",
-					Value: r.Logging.Spec.FluentbitSpec.BufferStorage.StoragePath,
-				},
-			},
-			Ports: r.generatePortsBufferVolumeMetrics(),
+			Args:            []string{"--startup", customRunner},
+			Ports:           r.generatePortsBufferVolumeMetrics(),
 			VolumeMounts: []corev1.VolumeMount{
 				{
 					Name:      BufferStorageVolume,
