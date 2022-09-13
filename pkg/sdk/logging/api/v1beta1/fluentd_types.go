@@ -147,9 +147,7 @@ type FluentdDrainConfig struct {
 	Enabled bool `json:"enabled,omitempty"`
 	// Container image to use for the drain watch sidecar
 	Annotations map[string]string `json:"annotations,omitempty"`
-	// Should persistent volume claims be deleted after draining is done
-	DeleteVolume bool      `json:"deleteVolume,omitempty"`
-	Image        ImageSpec `json:"image,omitempty"`
+	Image       ImageSpec         `json:"image,omitempty"`
 	// Container image to use for the fluentd placeholder pod
 	PauseImage ImageSpec `json:"pauseImage,omitempty"`
 }

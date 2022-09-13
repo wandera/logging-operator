@@ -4452,8 +4452,6 @@ spec:
                             additionalProperties:
                               type: string
                             type: object
-                          deleteVolume:
-                            type: boolean
                           enabled:
                             type: boolean
                           image:
