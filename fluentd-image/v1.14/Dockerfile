@@ -36,9 +36,6 @@ RUN apk update \
  # See https://github.com/uken/fluent-plugin-elasticsearch/issues/912
  && gem install elasticsearch -v 7.13.3 \
  && gem install elasticsearch-xpack -v 7.13.3 \
- && gem install fluent-plugin-detect-exceptions -v 0.0.14 \
- # FMI https://github.com/banzaicloud/logging-operator/issues/887 \
- && find /usr/lib/ruby/gems/2.*/gems/fluent-plugin-detect-exceptions-* -type f -print0 | xargs -0 chmod 644 \
  && gem install \
          specific_install \
          fluent-plugin-remote-syslog \
@@ -81,6 +78,10 @@ RUN apk update \
  && gem specific_install -l https://github.com/SumoLogic/sumologic-kubernetes-fluentd.git -d fluent-plugin-enhance-k8s-metadata \
  && gem specific_install -l https://github.com/SumoLogic/sumologic-kubernetes-fluentd.git -d fluent-plugin-kubernetes-sumologic \
  # https://github.com/SumoLogic/sumologic-kubernetes-fluentd/blob/main/Dockerfile#L35
+ && gem specific_install -l https://github.com/kuldazbraslav/fluent-plugin-detect-exceptions.git \
+ #&& gem specific_install -l https://github.com/GoogleCloudPlatform/fluent-plugin-detect-exceptions.git \
+ # FMI https://github.com/banzaicloud/logging-operator/issues/887 \
+ && find /usr/lib/ruby/gems/2.*/gems/fluent-plugin-detect-exceptions-* -type f -print0 | xargs -0 chmod 644 \
  && gem specific_install https://github.com/abonas/kubeclient --ref 831e360772c717aab5ca086521c45c86ee51435e \
  && apk del .build-deps $buildDeps \
  && rm -rf /tmp/* /var/tmp/* /usr/lib/ruby/gems/*/cache/*.gem /usr/lib/ruby/gems/2.*/gems/fluentd-*/test
