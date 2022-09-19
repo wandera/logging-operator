@@ -59,6 +59,7 @@ RUN apk update \
          fluent-plugin-record-modifier \
          fluent-plugin-splunk-hec \
          fluent-plugin-newrelic \
+         fluent-plugin-elasticsearch \
          fluent-plugin-cloudwatch-logs \
          fluent-plugin-opensearch \
          fluent-plugin-throttle \
@@ -81,7 +82,6 @@ RUN apk update \
  #&& gem specific_install -l https://github.com/GoogleCloudPlatform/fluent-plugin-detect-exceptions.git \
  # FMI https://github.com/banzaicloud/logging-operator/issues/887 \
  && find /usr/lib/ruby/gems/2.*/gems/fluent-plugin-detect-exceptions-* -type f -print0 | xargs -0 chmod 644 \
- && gem specific_install -l https://github.com/mkmet/fluent-plugin-elasticsearch.git \
  && gem specific_install https://github.com/abonas/kubeclient --ref 831e360772c717aab5ca086521c45c86ee51435e \
  && apk del .build-deps $buildDeps \
  && rm -rf /tmp/* /var/tmp/* /usr/lib/ruby/gems/*/cache/*.gem /usr/lib/ruby/gems/2.*/gems/fluentd-*/test
